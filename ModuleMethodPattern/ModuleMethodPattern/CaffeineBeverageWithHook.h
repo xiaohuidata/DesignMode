@@ -1,13 +1,16 @@
 #pragma once
 #include <iostream>
+#include <string>
 
-class CaffeineBeberage{
+class CaffeineBeberageWithHook{
 public:
 	void preparerecipe(){
 		boilWater();
 		brew();
 		pourInCup();
-		addCondiments();
+		if (customerWantsCondiments()){
+			addCondiments();
+		}
 	}
 
 	virtual void brew() = 0;
@@ -20,9 +23,13 @@ public:
 	void pourInCup(){
 		std::cout << "Rouring into cup" << std::endl;
 	}
+
+	virtual bool customerWantsCondiments(){
+		return true;
+	}
 };
 
-class Tea : public CaffeineBeberage{
+class TeaWithHook : public CaffeineBeberageWithHook{
 public:
 	void brew(){
 		std::cout << "Steeping the tea" << std::endl;
@@ -32,12 +39,29 @@ public:
 	}
 };
 
-class Coffee : public CaffeineBeberage{
+class CoffeeWithHook : public CaffeineBeberageWithHook{
 public:
 	void brew(){
 		std::cout << "Dripping Coffee through filter" << std::endl;
 	}
 	void addCondiments(){
 		std::cout << "Adding Sugar and Milk" << std::endl;
+	}
+
+	bool customerWantsCondiments(){
+		std::string answer = getUserInput();
+		if (answer[0] == 'y'){
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+
+	std::string getUserInput(){
+		std::string answer;
+		std::cout << "Wold you like milk and sugar whith your coffee (y/n)£¿" << std::endl;
+		std::cin >> answer;
+		return answer;
 	}
 };
